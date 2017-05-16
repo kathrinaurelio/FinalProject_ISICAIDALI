@@ -11,7 +11,8 @@ and open the template in the editor.
     </head>
     <body>
         <?php
-        echo "Hello team!"
+        echo "Hello team! Can you make changes?";
+       
         ?>
     </body>
 </html>
