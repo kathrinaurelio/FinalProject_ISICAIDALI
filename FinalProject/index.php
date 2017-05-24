@@ -1,18 +1,41 @@
+<?php require('includes/config.php'); ?>
 <!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>This could be the index-page of our project</title>
-    </head>
-    <body>
-        <?php
-        echo "Hello team! Can you make changes?";
-        echo "LG trying to make a change..";
-        ?>
-    </body>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Blog</title>
+    <link rel="stylesheet" href="style/normalize.css">
+    <link rel="stylesheet" href="style/main.css">
+</head>
+<body>
+
+	<div id="wrapper">
+
+		<h1>Blog</h1>
+		<hr />
+
+		<?php
+			try {
+
+				$stmt = $db->query('SELECT postID, postTitle, postDesc, postDate FROM blog_posts ORDER BY postID DESC');
+				while($row = $stmt->fetch()){
+					
+					echo '<div>';
+						echo '<h1><a href="viewpost.php?id='.$row['postID'].'">'.$row['postTitle'].'</a></h1>';
+						echo '<p>Posted on '.date('jS M Y H:i:s', strtotime($row['postDate'])).'</p>';
+						echo '<p>'.$row['postDesc'].'</p>';				
+						echo '<p><a href="viewpost.php?id='.$row['postID'].'">Read More</a></p>';				
+					echo '</div>';
+
+				}
+
+			} catch(PDOException $e) {
+			    echo $e->getMessage();
+			}
+		?>
+
+	</div>
+
+
+</body>
 </html>
