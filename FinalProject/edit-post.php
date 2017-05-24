@@ -2,6 +2,14 @@
 
 <?php
 
+//include config
+require_once('../includes/config.php');
+
+//if not logged in redirect to login page
+if(!$user->is_logged_in()){ header('Location: login.php'); }
+
+
+
 try {
 
     $stmt = $db->prepare('SELECT postID, postTitle, postDesc, postCont FROM blog_posts WHERE postID = :postID');
@@ -64,7 +72,7 @@ if(isset($_POST['submit'])){
 //    with an action status.-->
 
 
-try {
+ try {
 
 //insert into database-->
     $stmt = $db->prepare('UPDATE blog_posts SET postTitle = :postTitle, postDesc = :postDesc, postCont = :postCont WHERE postID = :postID') ;
@@ -83,4 +91,4 @@ try {
     echo $e->getMessage();
 }
 
-?>
+ ?>

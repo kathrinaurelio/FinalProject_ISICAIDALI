@@ -1,10 +1,20 @@
 <!DOCTYPE html>
 
+<?php
+//include config
+require_once('../includes/config.php');
+
+//if not logged in redirect to login page
+if(!$user->is_logged_in()){ header('Location: login.php'); }
+
+?>
+
 <!--//The form to add a post is made up of input's and textareas, each section 
 //    has a name which will become a variable in php when the form is submitted.
 //The forms also use what's called sticky forms meaning if validation fails then 
 //    show all content entered into the form.-->
-      
+
+
 <form action='' method='post'>
 
     <p><label>Title</label><br />
@@ -54,8 +64,9 @@ Next validate the data, these are very basic validation rules. These can be
 improved upon, if any of the if statements are true then an error is needed, 
 adding an error to an array called error is a simple way to collect multiple errors.-->
 
+<?php
 
-<!--if form has been submitted process it-->
+//<!--if form has been submitted process it-->
 if(isset($_POST['submit'])){
 
     $_POST = array_map( 'stripslashes', $_POST );
@@ -75,11 +86,11 @@ if(isset($_POST['submit'])){
     if($postCont ==''){
         $error[] = 'Please enter the content.';
     }
-<!--Next if no error has been set then insert the data into the database, 
-this is using prepared statements the place holders :postTitle, :postDesc
-etc are using to bind the matching array elements when execute to add the data
-into the correct columns. Once inserted the user is redirected back to the admin
-a action status is appended to the url ?action=added.-->
+//<!--Next if no error has been set then insert the data into the database, 
+//this is using prepared statements the place holders :postTitle, :postDesc
+//etc are using to bind the matching array elements when execute to add the data
+//into the correct columns. Once inserted the user is redirected back to the admin
+//a action status is appended to the url ?action=added.-->
 
 if(!isset($error)){
 
@@ -104,7 +115,7 @@ if(!isset($error)){
 
 }
 
-<!--If there has been any errors set then loop through the error array and display them.-->
+//<!--If there has been any errors set then loop through the error array and display them.-->
 
 if(isset($error)){
     foreach($error as $error){
@@ -112,3 +123,4 @@ if(isset($error)){
     }
 }
 
+?>
