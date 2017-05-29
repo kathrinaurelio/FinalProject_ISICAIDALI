@@ -122,5 +122,3 @@ if(isset($error)){
         echo '<p class="error">'.$error.'</p>';
     }
 }
-
-?>
