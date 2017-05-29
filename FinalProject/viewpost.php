@@ -9,10 +9,17 @@
 // tamper with the database.
 //
  require('includes/config.php'); 
+ //include ('extras/socialbutton/socialbutton.html');
 
 $stmt = $db->prepare('SELECT postID, postTitle, postCont, postDate FROM blog_posts WHERE postID = :postID');
+$stmt2 = $db->prepare('SELECT img FROM blog_imgs WHERE postID = :postID');
+
 $stmt->execute(array(':postID' => $_GET['id']));
+
+$stmt2->execute(array(':postID' => $_GET['id']));
+
 $row = $stmt->fetch();
+$row2 = $stmt2->fetch();
 
 //if post does not exists redirect user.
 if($row['postID'] == ''){
@@ -42,7 +49,8 @@ if($row['postID'] == ''){
 			echo '<div>';
 				echo '<h1>'.$row['postTitle'].'</h1>';
 				echo '<p>Posted on '.date('jS M Y', strtotime($row['postDate'])).'</p>';
-				echo '<p>'.$row['postCont'].'</p>';				
+				echo '<p>'.$row['postCont'].'</p>';
+                                echo '<p><img src="admin/images/'.$row2['img'].'" /></p>';
 			echo '</div>';
 		?>
 

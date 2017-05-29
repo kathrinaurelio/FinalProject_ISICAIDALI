@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <?php
 //include config
 require_once('../includes/config.php');
@@ -72,7 +73,30 @@ if (!$user->is_logged_in()) {
 					':postCont' => $postCont,
 					':postDate' => date('Y-m-d H:i:s')
 				));
+                                
+                                // if image has been uploaded
+                                //      save image into admin/images
+                                //      insert into blog_imgs with the filename as "img"
+                                
+                                $stmt2 = $db->prepare('INSERT INTO blog_imgs (img) VALUES (:img)') ;
+				$stmt2->execute(array(
+					':img' => $img,
+				));
+             ?>                   
+<form action="upload.php" 
+	method="post"      
+	enctype="multipart/form-data" >
 
+  <input type="hidden" 
+	   name="MAX_FILE_SIZE" 
+         value="10000000" />
+
+  <input type="file" name="myfile" />
+  <input type="submit" value="send" />
+</form>
+        
+        <?php
+                                
 				//redirect to index page
 				header('Location: index.php?action=added');
 				exit;
@@ -106,10 +130,10 @@ if (!$user->is_logged_in()) {
 
 		<p><input type='submit' name='submit' value='Submit'></p>
 
-<<<<<<< HEAD
+<!--<<<<<<< HEAD
 }
 
-//<!--If there has been any errors set then loop through the error array and display them.-->
+//If there has been any errors set then loop through the error array and display them.
 
 if(isset($error)){
     foreach($error as $error){
@@ -120,4 +144,4 @@ if(isset($error)){
 	</form>
 
 </div>
->>>>>>> 39172b811f5ca6398786b5034dc6a924460ade28
+>>>>>>> 39172b811f5ca6398786b5034dc6a924460ade28-->
