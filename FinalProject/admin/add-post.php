@@ -9,7 +9,6 @@ if (!$user->is_logged_in()) {
 }
 ?>
 
-<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -129,10 +128,10 @@ if (!$user->is_logged_in()) {
 		<textarea name='postCont' cols='60' rows='10'><?php if(isset($error)){ echo $_POST['postCont'];}?></textarea></p>
 
 		<p><input type='submit' name='submit' value='Submit'></p>
+        </form>
+        
 
-<!--<<<<<<< HEAD
-}
-
+<?php
 //If there has been any errors set then loop through the error array and display them.
 
 if(isset($error)){
@@ -140,8 +139,11 @@ if(isset($error)){
         echo '<p class="error">'.$error.'</p>';
     }
 }
-=======
-	</form>
+
+?>
 
 </div>
->>>>>>> 39172b811f5ca6398786b5034dc6a924460ade28-->
+</body>
+</html>
+  
+
