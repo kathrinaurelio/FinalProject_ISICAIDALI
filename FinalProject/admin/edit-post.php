@@ -46,41 +46,74 @@ if(!$user->is_logged_in()){ header('Location: login.php'); }
 
 		//very basic validation
 		if($postID ==''){
-			$error[] = 'This post is missing a valid id!.';
+                    $error[] = 'This post is missing a valid id!.';
 		}
 
 		if($postTitle ==''){
-			$error[] = 'Please enter the title.';
+                    $error[] = 'Please enter the title.';
 		}
+                
+                if ($_FILES['myfile']['size'] > 0 && $imageCaption === '') {
+                    $error[] = 'Please enter an image caption';
+                }
 
 		if($postDesc ==''){
-			$error[] = 'Please enter the description.';
+                    $error[] = 'Please enter the description.';
 		}
 
 		if($postCont ==''){
-			$error[] = 'Please enter the content.';
+                    $error[] = 'Please enter the content.';
 		}
 
 		if(!isset($error)){
 
-			try {
+                    try {
 
-				//insert into database
-				$stmt = $db->prepare('UPDATE blog_posts SET postTitle = :postTitle, postDesc = :postDesc, postCont = :postCont WHERE postID = :postID') ;
-				$stmt->execute(array(
-					':postTitle' => $postTitle,
-					':postDesc' => $postDesc,
-					':postCont' => $postCont,
-					':postID' => $postID
-				));
+                        //insert into database
+                        $stmt = $db->prepare('UPDATE blog_posts SET postTitle = :postTitle, postDesc = :postDesc, postCont = :postCont WHERE postID = :postID') ;
+                        $stmt->execute(array(
+                                ':postTitle' => $postTitle,
+                                ':postDesc' => $postDesc,
+                                ':postCont' => $postCont,
+                                ':postID' => $postID
+                        ));
+                        
+                        if ($_FILES['myfile']['size'] > 0) {
+                            
+                            // delete existing blog_imgs row
+                            $stmt2 = $db->prepare('DELETE FROM blog_imgs WHERE postID = :postID') ;
+                            $stmt2->execute(array(
+                                ':postID' => $postID
+                            ));
+                            
+                            $info = pathinfo($_FILES['myfile']['name']);
+                            $ext = $info['extension']; // get the extension of the file
 
-				//redirect to index page
-				header('Location: index.php?action=updated');
-				exit;
+                            // name the image "postId.extension"
+                            $newname = $postID . '.' . $ext; 
+                            $caption = $_POST['imageCaption'];
 
-			} catch(PDOException $e) {
-			    echo $e->getMessage();
-			}
+                            // save the image
+                            $target = 'images/'.$newname;
+                            move_uploaded_file($_FILES['myfile']['tmp_name'], $target);
+
+                            // insert a record into the blog_imgs
+                            $stmt3 = $db->prepare('INSERT INTO blog_imgs (caption, img, postID) VALUES (:caption, :img, :postId)');
+                            $stmt3->execute(array(
+                               ':caption' => $caption,
+                               ':img' => $newname,
+                               ':postId' => $postID
+                            ));
+                            
+                        }
+
+                        //redirect to index page
+                        header('Location: index.php?action=updated');
+                        exit;
+
+                    } catch(PDOException $e) {
+                        echo $e->getMessage();
+                    }
 
 		}
 
@@ -102,6 +135,10 @@ if(!$user->is_logged_in()){ header('Location: login.php'); }
 			$stmt = $db->prepare('SELECT postID, postTitle, postDesc, postCont FROM blog_posts WHERE postID = :postID') ;
 			$stmt->execute(array(':postID' => $_GET['id']));
 			$row = $stmt->fetch(); 
+                        
+                        $stmt2 = $db->prepare('SELECT imgID, img, caption FROM blog_imgs WHERE postID = :postID') ;
+			$stmt2->execute(array(':postID' => $_GET['id']));
+			$rowImg = $stmt2->fetch(); 
 
 		} catch(PDOException $e) {
 		    echo $e->getMessage();
@@ -109,7 +146,7 @@ if(!$user->is_logged_in()){ header('Location: login.php'); }
 
 	?>
 
-	<form action='' method='post'>
+	<form action='' method='post' enctype='multipart/form-data'>
 		<input type='hidden' name='postID' value='<?php echo $row['postID'];?>'>
 
 		<p><label>Title</label><br />
@@ -117,6 +154,20 @@ if(!$user->is_logged_in()){ header('Location: login.php'); }
 
 		<p><label>Description</label><br />
 		<textarea name='postDesc' cols='60' rows='10'><?php echo $row['postDesc'];?></textarea></p>
+                
+                <?php if ($rowImg && $rowImg['imgID']) { ?>
+                <p>Current image:</p>
+                <p><img src='images/<?php echo $rowImg['img'] ?>' style="width: 100px;" /></p>
+                
+                <p>Only select a new image below to overwrite the existing one</p>
+                
+                <?php } ?>
+                
+                <p><label>Image</label><br />
+                <input type="file" name="myfile" /></p>
+                
+                <p><label>Image caption</label><br />
+                <input type="text" name="imageCaption" value='<?php echo $rowImg['caption']; ?>' /></p>
 
 		<p><label>Content</label><br />
 		<textarea name='postCont' cols='60' rows='10'><?php echo $row['postCont'];?></textarea></p>

@@ -8,8 +8,11 @@ if(!$user->is_logged_in()){ header('Location: login.php'); }
 //show message from add / edit page
 if(isset($_GET['delpost'])){ 
 
-	$stmt = $db->prepare('DELETE FROM blog_posts WHERE postID = :postID') ;
+        $stmt = $db->prepare('DELETE FROM blog_imgs WHERE postID = :postID') ;
 	$stmt->execute(array(':postID' => $_GET['delpost']));
+        
+	$stmt2 = $db->prepare('DELETE FROM blog_posts WHERE postID = :postID') ;
+	$stmt2->execute(array(':postID' => $_GET['delpost']));
 
 	header('Location: index.php?action=deleted');
 	exit;

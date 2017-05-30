@@ -51,6 +51,14 @@ if (!$user->is_logged_in()) {
 		if($postTitle ==''){
 			$error[] = 'Please enter the title.';
 		}
+                
+                if ($_FILES['myfile']['size'] === 0) {
+                    $error[] = 'Please select an image';
+                }
+                
+                if ($imageCaption === '') {
+                    $error[] = 'Please enter an image caption';
+                }
 
 		if($postDesc ==''){
 			$error[] = 'Please enter the description.';
@@ -62,49 +70,51 @@ if (!$user->is_logged_in()) {
 
 		if(!isset($error)){
 
-			try {
+                    try {
 
-				//insert into database
-				$stmt = $db->prepare('INSERT INTO blog_posts (postTitle,postDesc,postCont,postDate) VALUES (:postTitle, :postDesc, :postCont, :postDate)') ;
-				$stmt->execute(array(
-					':postTitle' => $postTitle,
-					':postDesc' => $postDesc,
-					':postCont' => $postCont,
-					':postDate' => date('Y-m-d H:i:s')
-				));
-                                
-                                // if image has been uploaded
-                                //      save image into admin/images
-                                //      insert into blog_imgs with the filename as "img"
-                                
-                                $stmt2 = $db->prepare('INSERT INTO blog_imgs (img) VALUES (:img)') ;
-				$stmt2->execute(array(
-					':img' => $img,
-				));
-             ?>                   
-<form action="upload.php" 
-	method="post"      
-	enctype="multipart/form-data" >
+                        //insert into database
+                        $stmt = $db->prepare('INSERT INTO blog_posts (postTitle,postDesc,postCont,postDate) VALUES (:postTitle, :postDesc, :postCont, :postDate)') ;
+                        $stmt->execute(array(
+                                ':postTitle' => $postTitle,
+                                ':postDesc' => $postDesc,
+                                ':postCont' => $postCont,
+                                ':postDate' => date('Y-m-d H:i:s')
+                        ));
 
-  <input type="hidden" 
-	   name="MAX_FILE_SIZE" 
-         value="10000000" />
+                        // get last postID
+                        $stmt2 = $db->prepare('SELECT postID FROM blog_posts ORDER BY postID DESC LIMIT 1');
+                        $stmt2->execute();
+                        $postId = $stmt2->fetch();
 
-  <input type="file" name="myfile" />
-  <input type="submit" value="send" />
-</form>
-        
-        <?php
-                                
-				//redirect to index page
-				header('Location: index.php?action=added');
-				exit;
+                        // get information on image
+                        $info = pathinfo($_FILES['myfile']['name']);
+                        $ext = $info['extension']; // get the extension of the file
 
-			} catch(PDOException $e) {
-			    echo $e->getMessage();
-			}
+                        // name the image "postId.extension"
+                        $newname = $postId['postID'] . '.' . $ext; 
+                        $caption = $_POST['imageCaption'];
 
-		}
+                        // save the image
+                        $target = 'images/'.$newname;
+                        move_uploaded_file($_FILES['myfile']['tmp_name'], $target);
+
+                        // insert a record into the blog_imgs
+                        $stmt3 = $db->prepare('INSERT INTO blog_imgs (caption, img, postID) VALUES (:caption, :img, :postId)');
+                        $stmt3->execute(array(
+                           ':caption' => $caption,
+                           ':img' => $newname,
+                           ':postId' => $postId['postID']
+                        ));
+
+                        //redirect to index page
+                        header('Location: index.php?action=added');
+                        exit;
+
+                    } catch(PDOException $e) {
+                        echo $e->getMessage();
+                    }
+
+            }
 
 	}
 
@@ -116,19 +126,28 @@ if (!$user->is_logged_in()) {
 	}
 	?>
 
-	<form action='' method='post'>
+	<form action='' method='post' enctype='multipart/form-data'>
 
 		<p><label>Title</label><br />
 		<input type='text' name='postTitle' value='<?php if(isset($error)){ echo $_POST['postTitle'];}?>'></p>
 
 		<p><label>Description</label><br />
 		<textarea name='postDesc' cols='60' rows='10'><?php if(isset($error)){ echo $_POST['postDesc'];}?></textarea></p>
-
+                
+                <p><label>Image</label><br />
+                <input type="file" name="myfile" /></p>
+                
+                <p><label>Image caption</label><br />
+                <input type="text" name="imageCaption" value='<?php if(isset($error)){ echo $_POST['imageCaption'];}?>' /></p>
+                
 		<p><label>Content</label><br />
 		<textarea name='postCont' cols='60' rows='10'><?php if(isset($error)){ echo $_POST['postCont'];}?></textarea></p>
+                <p><input type='submit' name='submit' value='Submit'></p>
 
-		<p><input type='submit' name='submit' value='Submit'></p>
+                   
         </form>
+        
+
         
 
 <?php

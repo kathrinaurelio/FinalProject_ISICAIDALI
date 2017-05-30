@@ -52,7 +52,7 @@ if ($row['postID'] == '') {
             echo '<div>';
             echo '<h1>' . $row['postTitle'] . '</h1>';
             echo '<p>Posted on ' . date('jS M Y', strtotime($row['postDate'])) . '</p>';
-            echo '<p><img src="admin/images/'.$images['img'].'" /></p>';
+            echo '<p><img src="admin/images/'.$images['img'].'" style="max-width: 350px;" /></p>';
             echo '<p>' . $row['postCont'] . '</p>';
             echo '</div>';
             ?>
