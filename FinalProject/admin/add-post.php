@@ -126,7 +126,7 @@ if (!$user->is_logged_in()) {
 	}
 	?>
 
-	<form action='' method='post' enctype='multipart/form-data'>
+            <form action='' method='post' enctype='multipart/form-data'>
 
 		<p><label>Title</label><br />
 		<input type='text' name='postTitle' value='<?php if(isset($error)){ echo $_POST['postTitle'];}?>'></p>
@@ -145,24 +145,10 @@ if (!$user->is_logged_in()) {
                 <p><input type='submit' name='submit' value='Submit'></p>
 
                    
-        </form>
-        
+            </form>
 
-        
-
-<?php
-//If there has been any errors set then loop through the error array and display them.
-
-if(isset($error)){
-    foreach($error as $error){
-        echo '<p class="error">'.$error.'</p>';
-    }
-}
-
-?>
-
-</div>
-</body>
+        </div>
+    </body>
 </html>
   
 
