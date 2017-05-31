@@ -132,7 +132,7 @@ if (!$user->is_logged_in()) {
 		<input type='text' name='postTitle' value='<?php if(isset($error)){ echo $_POST['postTitle'];}?>'></p>
 
 		<p><label>Description</label><br />
-		<textarea name='postDesc' cols='60' rows='10'><?php if(isset($error)){ echo $_POST['postDesc'];}?></textarea></p>
+                    <input name='postDesc' cols='60' rows='10'><?php if(isset($error)){ echo $_POST['postDesc'];}?></p>
                 
                 <p><label>Image</label><br />
                 <input type="file" name="myfile" /></p>

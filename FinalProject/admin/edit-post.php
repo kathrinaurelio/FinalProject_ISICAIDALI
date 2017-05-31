@@ -153,7 +153,7 @@ if(!$user->is_logged_in()){ header('Location: login.php'); }
 		<input type='text' name='postTitle' value='<?php echo $row['postTitle'];?>'></p>
 
 		<p><label>Description</label><br />
-		<textarea name='postDesc' cols='60' rows='10'><?php echo $row['postDesc'];?></textarea></p>
+                    <input name='postDesc' cols='60' rows='10'><?php echo $row['postDesc'];?></p>
                 
                 <?php if ($rowImg && $rowImg['imgID']) { ?>
                 <p>Current image:</p>
