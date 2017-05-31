@@ -52,11 +52,7 @@ if (!$user->is_logged_in()) {
 			$error[] = 'Please enter the title.';
 		}
                 
-                if ($_FILES['myfile']['size'] === 0) {
-                    $error[] = 'Please select an image';
-                }
-                
-                if ($imageCaption === '') {
+                if ($_FILES['myfile']['size'] > 0 && $imageCaption === '') {
                     $error[] = 'Please enter an image caption';
                 }
 
@@ -80,31 +76,35 @@ if (!$user->is_logged_in()) {
                                 ':postCont' => $postCont,
                                 ':postDate' => date('Y-m-d H:i:s')
                         ));
+                           
+                        
+                        if ($_FILES['myfile']['size'] > 0) {
 
-                        // get last postID
-                        $stmt2 = $db->prepare('SELECT postID FROM blog_posts ORDER BY postID DESC LIMIT 1');
-                        $stmt2->execute();
-                        $postId = $stmt2->fetch();
+                            // get last postID
+                            $stmt2 = $db->prepare('SELECT postID FROM blog_posts ORDER BY postID DESC LIMIT 1');
+                            $stmt2->execute();
+                            $postId = $stmt2->fetch();
 
-                        // get information on image
-                        $info = pathinfo($_FILES['myfile']['name']);
-                        $ext = $info['extension']; // get the extension of the file
+                            // get information on image
+                            $info = pathinfo($_FILES['myfile']['name']);
+                            $ext = $info['extension']; // get the extension of the file
 
-                        // name the image "postId.extension"
-                        $newname = $postId['postID'] . '.' . $ext; 
-                        $caption = $_POST['imageCaption'];
+                            // name the image "postId.extension"
+                            $newname = $postId['postID'] . '.' . $ext; 
+                            $caption = $_POST['imageCaption'];
 
-                        // save the image
-                        $target = 'images/'.$newname;
-                        move_uploaded_file($_FILES['myfile']['tmp_name'], $target);
+                            // save the image
+                            $target = 'images/'.$newname;
+                            move_uploaded_file($_FILES['myfile']['tmp_name'], $target);
 
-                        // insert a record into the blog_imgs
-                        $stmt3 = $db->prepare('INSERT INTO blog_imgs (caption, img, postID) VALUES (:caption, :img, :postId)');
-                        $stmt3->execute(array(
-                           ':caption' => $caption,
-                           ':img' => $newname,
-                           ':postId' => $postId['postID']
-                        ));
+                            // insert a record into the blog_imgs
+                            $stmt3 = $db->prepare('INSERT INTO blog_imgs (caption, img, postID) VALUES (:caption, :img, :postId)');
+                            $stmt3->execute(array(
+                               ':caption' => $caption,
+                               ':img' => $newname,
+                               ':postId' => $postId['postID']
+                            ));
+                        }
 
                         //redirect to index page
                         header('Location: index.php?action=added');
