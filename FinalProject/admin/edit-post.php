@@ -150,10 +150,10 @@ if(!$user->is_logged_in()){ header('Location: login.php'); }
 		<input type='hidden' name='postID' value='<?php echo $row['postID'];?>'>
 
 		<p><label>Title</label><br />
-		<input type='text' name='postTitle' value='<?php echo $row['postTitle'];?>'></p>
-
-		<p><label>Description</label><br />
-                    <input name='postDesc' cols='60' rows='10'><?php echo $row['postDesc'];?></p>
+		<input type='text' name='postTitle' value='<?php echo $row['postTitle'];?>'</p>
+                
+                <p><label>Description</label><br />
+		<input type='text' name='postDesc' value='<?php echo $row['postDesc'];?>'</p>
                 
                 <?php if ($rowImg && $rowImg['imgID']) { ?>
                 <p>Current image:</p>

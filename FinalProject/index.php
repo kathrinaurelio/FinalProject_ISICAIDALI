@@ -39,8 +39,11 @@
                             echo '<div class="w3-card-4 w3-margin w3-white">';
                             echo '<div class="w3-container">';
 
+                            $imgstmt = $db->prepare('SELECT img FROM blog_imgs WHERE postID = :postID');
+                            $imgstmt->execute(array(':postID' => $row['postID']));
+                            $img = $imgstmt->fetch();
                             
-                            echo '<img src="/w3images/bridge.jpg" alt="Norway" style="width:100%">';
+                            echo '<img src="admin/images/'. $img['img'] . '" style="width:100%"/>';
                             echo '<h3><b>'. $row['postTitle'] . '</b></h3>';
                             echo '<h5>'. $row['postDesc'] . ', <span class="w3-opacity">' . date('jS M Y', strtotime($row['postDate'])) . '</span></h5>';
                             

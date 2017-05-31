@@ -32,37 +32,46 @@ if ($row['postID'] == '') {
 
 ?>
 <!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <title>Blog - <?php echo $row['postTitle']; ?></title>
-        <link rel="stylesheet" href="style/normalize.css">
-        <link rel="stylesheet" href="style/main.css">
-    </head>
-    <body>
-
-        <div id="wrapper">
-
-            <h1>Blog</h1>
-            <hr />
-            <p><a href="./">Blog Index</a></p>
+<html>
+    <title>Team blog</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+    <style>
+        body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
+    </style>
+    <body class="w3-light-grey">
 
 
+        <!-- Header -->
+        <header class="w3-container w3-center w3-padding-32"> 
+            <h1><b>OUR BLOG</b></h1>
+            
+        </header>
+
+            <p><a href="./">return to all blog posts</a></p>
+
+        <!-- Grid -->
+        <div class="w3-row">  
+            <div class="w3-col l8 s12">
+            
             <?php
             echo '<div>';
             echo '<h1>' . $row['postTitle'] . '</h1>';
-            echo '<p>Posted on ' . date('jS M Y', strtotime($row['postDate'])) . '</p>';
+            echo '<p><i><span class="w3-opacity">Posted on ' . date('jS M Y', strtotime($row['postDate'])) . '</i></p>';
             
             if ($images['img']) {
-                echo '<p><img src="admin/images/'.$images['img'].'" style="max-width: 350px;" /></p>';
+                echo '<p><img src="admin/images/'.$images['img'].'" style="max-width: 700px;" /></p>';
             }
             
             echo '<p>' . $row['postCont'] . '</p>';
             echo '</div>';
             ?>
-
         </div>
-        <div id="wrapper">
+        </div>
+        
+
             <h3>Comments</h3>
             <?php
              foreach ($comments as $comment) {
@@ -74,9 +83,10 @@ if ($row['postID'] == '') {
                 echo '</div>';
             }
             ?>
+            </div>
         </div>
         
-        <div id="wrapper">
+     
 
 
 	<h2>Add Comment</h2>
@@ -149,6 +159,6 @@ if ($row['postID'] == '') {
 
 	</form>
 
-</div>
+
     </body>
 </html>
