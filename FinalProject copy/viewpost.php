@@ -49,23 +49,20 @@ if ($row['postID'] == '') {
             <h1><b>OUR BLOG</b></h1>
             
         </header>
-        <!-- return to index button link -->
-        
 
-           
- 
+            <p><a href="./">return to all blog posts</a></p>
+
         <!-- Grid -->
         <div class="w3-row">  
-        <div class="w3-card-4 w3-margin w3-white">
-       <div class="w3-container">     
-
+            <div class="w3-col l8 s12">
+            
             <?php
             echo '<div>';
             echo '<h1>' . $row['postTitle'] . '</h1>';
             echo '<p><i><span class="w3-opacity">Posted on ' . date('jS M Y', strtotime($row['postDate'])) . '</i></p>';
             
             if ($images['img']) {
-                echo '<p><img src="admin/images/'.$images['img'].'" style="max-width: 560px;" /></p>';
+                echo '<p><img src="admin/images/'.$images['img'].'" style="max-width: 700px;" /></p>';
             }
             
             echo '<p>' . $row['postCont'] . '</p>';
@@ -74,12 +71,25 @@ if ($row['postID'] == '') {
         </div>
         </div>
         
-                    <!-- Grid -->
-        <div class="w3-row">  
-        <div class="w3-card-4 w3-margin w3-white">
-       <div class="w3-container">  
 
-	<h3>Add Comment</h3>
+            <h3>Comments</h3>
+            <?php
+             foreach ($comments as $comment) {
+                echo '<div>';
+                echo '<p>' . $comment['commentAuthor'] . '</p>';
+                echo '<p>Posted on ' . date('jS M Y', strtotime($comment['commentDate'])) . '</p>';
+                echo '<p>' . $comment['commentCont'] . '</p>';
+                echo '<p></br></p>';
+                echo '</div>';
+            }
+            ?>
+            </div>
+        </div>
+        
+     
+
+
+	<h2>Add Comment</h2>
 
 	<?php
 
@@ -128,8 +138,6 @@ if ($row['postID'] == '') {
 		}
 
 	}
-        
-        
 
 	//check for any errors
 	if(isset($error)){
@@ -150,40 +158,7 @@ if ($row['postID'] == '') {
 		<p><input type='submit' name='submit' value='Submit'></p>
 
 	</form>
-        
-       </div>
-            </div>
-            </div>
-            
-                    <!-- Grid -->
-        <div class="w3-row">  
-        <div class="w3-card-4 w3-margin w3-white">
-       <div class="w3-container">  
-           
-        <?php
-        
-        if ($comments == TRUE){
-            echo '<h3>Comments</h3>';
 
-             foreach ($comments as $comment) {
-                echo '<div>';
-                echo '<p>' . $comment['commentAuthor'];
-                echo '<i><span class="w3-opacity">, posted on ' . date('jS M Y', strtotime($comment['commentDate'])) . '</i></p>';
-                echo '<p>' . $comment['commentCont'] . '</p>';
-                echo '<p></br></p>';
-                echo '</div>';
-             }
-            }
-            ?>
-            </div>
-        </div>
-       <div class="w3-row">  
-       <div class="w3-card-4 w3-margin w3-white">
-       <div class="w3-container">   
-           
-            <p><a href="./"><button class="w3-button w3-padding-large w3-GREY w3-border"><b>RETURN TO ALL BLOG POSTS</b></button></a></p>    
-       </div>
-       </div>
-       </div>
+
     </body>
 </html>

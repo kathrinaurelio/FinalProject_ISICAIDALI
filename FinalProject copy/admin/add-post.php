@@ -1,15 +1,18 @@
-<?php //include config
+<!DOCTYPE html>
+<?php
+//include config
 require_once('../includes/config.php');
 
-
 //if not logged in redirect to login page
-if(!$user->is_logged_in()){ header('Location: login.php'); }
+if (!$user->is_logged_in()) {
+    header('Location: login.php');
+}
 ?>
-<!doctype html>
+
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Admin - Edit Post</title>
+  <title>Admin - Add Post</title>
   <link rel="stylesheet" href="../style/normalize.css">
   <link rel="stylesheet" href="../style/main.css">
   <script src="//tinymce.cachefly.net/4.0/tinymce.min.js"></script>
@@ -32,8 +35,7 @@ if(!$user->is_logged_in()){ header('Location: login.php'); }
 	<?php include('menu.php');?>
 	<p><a href="./">Blog Admin Index</a></p>
 
-	<h2>Edit Post</h2>
-
+	<h2>Add Post</h2>
 
 	<?php
 
@@ -46,12 +48,8 @@ if(!$user->is_logged_in()){ header('Location: login.php'); }
 		extract($_POST);
 
 		//very basic validation
-		if($postID ==''){
-                    $error[] = 'This post is missing a valid id!.';
-		}
-
 		if($postTitle ==''){
-                    $error[] = 'Please enter the title.';
+			$error[] = 'Please enter the title.';
 		}
                 
                 if ($_FILES['myfile']['size'] > 0 && $imageCaption === '') {
@@ -59,11 +57,11 @@ if(!$user->is_logged_in()){ header('Location: login.php'); }
                 }
 
 		if($postDesc ==''){
-                    $error[] = 'Please enter the description.';
+			$error[] = 'Please enter the description.';
 		}
 
 		if($postCont ==''){
-                    $error[] = 'Please enter the content.';
+			$error[] = 'Please enter the content.';
 		}
 
 		if(!isset($error)){
@@ -71,27 +69,28 @@ if(!$user->is_logged_in()){ header('Location: login.php'); }
                     try {
 
                         //insert into database
-                        $stmt = $db->prepare('UPDATE blog_posts SET postTitle = :postTitle, postDesc = :postDesc, postCont = :postCont WHERE postID = :postID') ;
+                        $stmt = $db->prepare('INSERT INTO blog_posts (postTitle,postDesc,postCont,postDate) VALUES (:postTitle, :postDesc, :postCont, :postDate)') ;
                         $stmt->execute(array(
                                 ':postTitle' => $postTitle,
                                 ':postDesc' => $postDesc,
                                 ':postCont' => $postCont,
-                                ':postID' => $postID
+                                ':postDate' => date('Y-m-d H:i:s')
                         ));
+                           
                         
                         if ($_FILES['myfile']['size'] > 0) {
-                            
-                            // delete existing blog_imgs row
-                            $stmt2 = $db->prepare('DELETE FROM blog_imgs WHERE postID = :postID') ;
-                            $stmt2->execute(array(
-                                ':postID' => $postID
-                            ));
-                            
+
+                            // get last postID
+                            $stmt2 = $db->prepare('SELECT postID FROM blog_posts ORDER BY postID DESC LIMIT 1');
+                            $stmt2->execute();
+                            $postId = $stmt2->fetch();
+
+                            // get information on image
                             $info = pathinfo($_FILES['myfile']['name']);
                             $ext = $info['extension']; // get the extension of the file
 
                             // name the image "postId.extension"
-                            $newname = $postID . '.' . $ext; 
+                            $newname = $postId['postID'] . '.' . $ext; 
                             $caption = $_POST['imageCaption'];
 
                             // save the image
@@ -103,81 +102,53 @@ if(!$user->is_logged_in()){ header('Location: login.php'); }
                             $stmt3->execute(array(
                                ':caption' => $caption,
                                ':img' => $newname,
-                               ':postId' => $postID
+                               ':postId' => $postId['postID']
                             ));
-                            
                         }
 
                         //redirect to index page
-                        header('Location: index.php?action=updated');
+                        header('Location: index.php?action=added');
                         exit;
 
                     } catch(PDOException $e) {
                         echo $e->getMessage();
                     }
 
-		}
+            }
 
 	}
 
-	?>
-
-
-	<?php
 	//check for any errors
 	if(isset($error)){
 		foreach($error as $error){
-			echo $error.'<br />';
+			echo '<p class="error">'.$error.'</p>';
 		}
 	}
-
-		try {
-
-			$stmt = $db->prepare('SELECT postID, postTitle, postDesc, postCont FROM blog_posts WHERE postID = :postID') ;
-			$stmt->execute(array(':postID' => $_GET['id']));
-			$row = $stmt->fetch(); 
-                        
-                        $stmt2 = $db->prepare('SELECT imgID, img, caption FROM blog_imgs WHERE postID = :postID') ;
-			$stmt2->execute(array(':postID' => $_GET['id']));
-			$rowImg = $stmt2->fetch(); 
-
-		} catch(PDOException $e) {
-		    echo $e->getMessage();
-		}
-
 	?>
 
-	<form action='' method='post' enctype='multipart/form-data'>
-		<input type='hidden' name='postID' value='<?php echo $row['postID'];?>'>
+            <form action='' method='post' enctype='multipart/form-data'>
 
 		<p><label>Title</label><br />
-		<input type='text' name='postTitle' value='<?php echo $row['postTitle'];?>'</p>
-                
-                <p><label>Description</label><br />
-		<input type='text' name='postDesc' value='<?php echo $row['postDesc'];?>'</p>
-                
-                <?php if ($rowImg && $rowImg['imgID']) { ?>
-                <p>Current image:</p>
-                <p><img src='images/<?php echo $rowImg['img'] ?>' style="width: 100px;" /></p>
-                
-                <p>Only select a new image below to overwrite the existing one</p>
-                
-                <?php } ?>
+		<input type='text' name='postTitle' value='<?php if(isset($error)){ echo $_POST['postTitle'];}?>'></p>
+
+		<p><label>Description</label><br />
+                    <input name='postDesc' cols='60' rows='10'><?php if(isset($error)){ echo $_POST['postDesc'];}?></p>
                 
                 <p><label>Image</label><br />
                 <input type="file" name="myfile" /></p>
                 
                 <p><label>Image caption</label><br />
-                <input type="text" name="imageCaption" value='<?php echo $rowImg['caption']; ?>' /></p>
-
+                <input type="text" name="imageCaption" value='<?php if(isset($error)){ echo $_POST['imageCaption'];}?>' /></p>
+                
 		<p><label>Content</label><br />
-		<textarea name='postCont' cols='60' rows='10'><?php echo $row['postCont'];?></textarea></p>
+		<textarea name='postCont' cols='60' rows='10'><?php if(isset($error)){ echo $_POST['postCont'];}?></textarea></p>
+                <p><input type='submit' name='submit' value='Submit'></p>
 
-		<p><input type='submit' name='submit' value='Update'></p>
+                   
+            </form>
 
-	</form>
+        </div>
+    </body>
+</html>
+  
 
-</div>
-
-</body>
-</html>	
