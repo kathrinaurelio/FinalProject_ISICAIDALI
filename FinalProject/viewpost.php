@@ -38,6 +38,17 @@ if ($row['postID'] == '') {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+    
+    <style><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></style>   
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    
+
     <style>
         body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
     </style>
@@ -51,7 +62,14 @@ if ($row['postID'] == '') {
         </header>
         <!-- return to index button link -->
         
-
+<!--               <div class="w3-row">  -->
+<!--       <div class="w3-card-4 w3-margin w3-white">-->
+       <div class="w3-container">   
+           
+            <p><a href="./"><button class="w3-button w3-padding-large w3-white w3-border"><b>RETURN TO ALL BLOG POSTS</b></button></a></p>    
+       </div>
+       </div>
+       </div>
            
  
         <!-- Grid -->
@@ -177,13 +195,47 @@ if ($row['postID'] == '') {
             ?>
             </div>
         </div>
-       <div class="w3-row">  
-       <div class="w3-card-4 w3-margin w3-white">
-       <div class="w3-container">   
-           
-            <p><a href="./"><button class="w3-button w3-padding-large w3-GREY w3-border"><b>RETURN TO ALL BLOG POSTS</b></button></a></p>    
-       </div>
-       </div>
-       </div>
+
+        <!-- previous and next buttons -->
+        <?php
+            $stmt = $db->prepare('SELECT postID FROM blog_posts ORDER BY postID DESC');
+            $stmt->execute();
+            $result = $stmt->fetchAll();
+            $prevPost = null;
+            $nextPost = null;
+            
+            // loop through all results using an index
+            for($i = 0; $i < count($result); ++$i){
+                
+                // if the IDs match, we've found the current post
+                if ($result[$i]['postID'] === $_GET['id']) {
+                    
+                    // set $prevPost to $i - 1 (if we're greater than 0)
+                    if ($i > 0) {
+                        $prevPost = $result[$i - 1];
+                    }
+                    
+                    // set $nextPost to $i + 1 (if we're not at the end)
+                    if (($i + 1) < count($result)) {
+                        $nextPost = $result[$i + 1];
+                    }
+                }
+             }
+            
+
+            echo  '<div class="container">' ;             
+            echo '<ul class="pager">';
+            
+            if ($prevPost && $prevPost['postID']) {
+                echo  '<li class="previous"><a href="viewpost.php?id='. $prevPost['postID'] . '">Previous</a></li>';
+            }
+            
+            if ($nextPost && $nextPost['postID']) {
+                echo  '<li class="next"><a href="viewpost.php?id='. $nextPost['postID'] . '">Next</a></li>';
+            }
+            
+            echo '</ul>';
+            echo '</div>';
+        ?>
     </body>
 </html>

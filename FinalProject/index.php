@@ -17,7 +17,7 @@
         <!-- Header -->
         <header class="w3-container w3-center w3-padding-32"> 
             <h1><b>OUR BLOG</b></h1>
-            <p>Welcome to our blog site, we are <span class="w3-tag">TEAM ??</span></p>
+            <p>Welcome to our blog site, it's about <span class="w3-tag">OUR BLOG PROJECT</span></p>
         </header>
 
         <!-- Grid -->
@@ -72,32 +72,32 @@
                 <div class="w3-card-2 w3-margin w3-margin-top">
                     <img src="style/team.jpeg" style="width:100%">
                     <div class="w3-container w3-white">
-                        <h4><b>Team name</b></h4>
-                        <p>This is our blog project, exploring the fun world of php.</p>
+                        <h4><b>This is our blog</b></h4>
+                        <p>Exploring the fun world of php.</p>
                     </div>
                 </div><hr>
 
                 <!-- links -->
                 <div class="w3-card-2 w3-margin">
                     <div class="w3-container w3-padding">
-                        <h4>Useful links</h4>
+                        <h4>Useful info</h4>
                     </div>
                     <ul class="w3-ul w3-hoverable w3-white">
                         <li class="w3-padding-16">
-                            <span class="w3-large">PHP tutorial</span><br>
-                            <span>Sed mattis nunc</span>
+                            <span class="w3-large">PHP</span><br>
+                            <span>PHP is a server scripting language, and a powerful tool for making dynamic and interactive Web pages.</span>
                         </li>
                         <li class="w3-padding-16">
-                            <span class="w3-large">Free counselling</span><br>
-                            <span>Praes tinci sed</span>
+                            <span class="w3-large">Bootstrap</span><br>
+                            <span>Bootstrap, a sleek, intuitive, and powerful mobile first front-end framework for faster and easier web development.</span>
                         </li> 
                         <li class="w3-padding-16">
-                            <span class="w3-large">Web advice</span><br>
-                            <span>Ultricies congue</span>
+                            <span class="w3-large">CSS</span><br>
+                            <span>CSS stands for Cascading Style Sheets. CSS describes how HTML elements are to be displayed on screen, paper, or in other media.</span>
                         </li>   
                         <li class="w3-padding-16 w3-hide-medium w3-hide-small">
-                            <span class="w3-large">w3schools</span><br>
-                            <span>Lorem ipsum dipsum</span>
+                            <span class="w3-large">Scrum</span><br>
+                            <span>Scrum is a framework for developing and sustaining complex products. This Guide contains the definition of Scrum. This definition consists of Scrum’s roles, events, artifacts, and the rules that bind them together. Ken Schwaber and Jeff Sutherland developed Scrum; the Scrum Guide is written and provided by them. Together, they stand behind the Scrum Guide.</span>
                         </li>  
                     </ul>
                 </div>
@@ -128,7 +128,7 @@
     </div>
     
     <!-- Subscribe Modal -->
-<div id="subscribe" class="w3-modal w3-animate-opacity">
+<!--<div id="subscribe" class="w3-modal w3-animate-opacity">
   <div class="w3-modal-content" style="padding:32px">
     <div class="w3-container w3-white">
       <i onclick="document.getElementById('subscribe').style.display='none'" class="fa fa-remove w3-transparent w3-button w3-xlarge w3-right"></i>
@@ -138,7 +138,7 @@
       <button type="button" class="w3-button w3-block w3-padding-large w3-red w3-margin-bottom" onclick="document.getElementById('subscribe').style.display='none'">Subscribe</button>
     </div>
   </div>
-</div>
+</div>-->
 
     <!-- Footer -->
     <footer class="w3-container w3-dark-grey w3-padding-32 w3-margin-top">
