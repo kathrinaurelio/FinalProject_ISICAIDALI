@@ -44,8 +44,8 @@
                             $img = $imgstmt->fetch();
                             
                             echo '<img src="admin/images/'. $img['img'] . '" style="width:100%"/>';
-                            echo '<h3><b>'. $row['postTitle'] . '</b></h3>';
-                            echo '<h5>'. $row['postDesc'] . ', <span class="w3-opacity">' . date('jS M Y', strtotime($row['postDate'])) . '</span></h5>';
+                            echo '<h3><b>'. $row['postTitle'] . ', <span class="w3-opacity">' . date('jS M Y', strtotime($row['postDate'])) . '</span></b></h3>';
+                            echo '<h5>'. $row['postDesc'] . '</h5>';
                             
                                 echo '<div class="w3-col m8 s12">';
                                 echo'<p><a href="viewpost.php?id=' . $row['postID'] . '"><button class="w3-button w3-padding-large w3-white w3-border"><b>READ MORE »</b></button></a></p>';
