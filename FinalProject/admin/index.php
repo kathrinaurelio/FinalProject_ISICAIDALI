@@ -12,9 +12,14 @@ if(isset($_GET['delpost'])){
         $stmt = $db->prepare('DELETE FROM blog_imgs WHERE postID = :postID') ;
 	$stmt->execute(array(':postID' => $_GET['delpost']));
         
+        $stmt3 = $db->prepare('DELETE FROM blog_comments WHERE postID = :postID') ;
+	$stmt3->execute(array(':postID' => $_GET['delpost']));
+
+        
 	$stmt2 = $db->prepare('DELETE FROM blog_posts WHERE postID = :postID') ;
 	$stmt2->execute(array(':postID' => $_GET['delpost']));
-
+       
+        
 	header('Location: index.php?action=deleted');
 	exit;
 } 
@@ -85,8 +90,8 @@ if(isset($_GET['delpost'])){
 	?>
 	</table>
 
-	<p><a href='add-post.php'>Add Post</a></p>
 
+        <p><a href='add-post.php'><button class="w3-button w3-padding-large w3-white w3-border"><b>Create a new blog post</b></button></a></p>
 </div>
 
 </body>

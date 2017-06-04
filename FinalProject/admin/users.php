@@ -86,8 +86,7 @@ if(isset($_GET['deluser'])){
 	?>
 	</table>
 
-	<p><a href='add-user.php'>Add User</a></p>
-
+        <p><a href="add-user.php"><button class="w3-button w3-padding-large w3-white w3-border"><b>Add a new user</b></button></a></p>
 </div>
 
 </body>

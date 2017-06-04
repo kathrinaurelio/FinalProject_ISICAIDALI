@@ -17,9 +17,9 @@ if(!$user->is_logged_in()){ header('Location: login.php'); }
 <div id="wrapper">
 
 	<?php include('menuuser.php');?>
-	<p><a href="users.php">User Admin Index</a></p>
+        <p><a href="users.php"><button class="w3-button w3-padding-large w3-white w3-border"><b>back to user admin</b></button></a></p>
 
-	<h2>Edit User</h2>
+	<h2>Edit user</h2>
 
 
 	<?php
@@ -128,16 +128,16 @@ if(!$user->is_logged_in()){ header('Location: login.php'); }
 		<p><label>Username</label><br />
 		<input type='text' name='username' value='<?php echo $row['username'];?>'></p>
 
-		<p><label>Password (only to change)</label><br />
+		<p><label>New password</label><br />
 		<input type='password' name='password' value=''></p>
 
-		<p><label>Confirm Password</label><br />
+		<p><label>Confirm new password</label><br />
 		<input type='password' name='passwordConfirm' value=''></p>
 
 		<p><label>Email</label><br />
 		<input type='text' name='email' value='<?php echo $row['email'];?>'></p>
 
-		<p><input type='submit' name='submit' value='Update User'></p>
+		<p><input type='submit' name='submit' value='Update user'></p>
 
 	</form>
 

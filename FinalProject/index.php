@@ -72,8 +72,8 @@
                 <div class="w3-card-2 w3-margin w3-margin-top">
                     <img src="style/team.jpeg" style="width:100%">
                     <div class="w3-container w3-white">
-                        <h4><b>This is our blog</b></h4>
-                        <p>Exploring the fun world of php.</p>
+                        <h4><b>This is our team</b></h4>
+                        <p>Kathrin and Laura, exploring PHP together.</p>
                     </div>
                 </div><hr>
 
@@ -92,12 +92,17 @@
                             <span>Bootstrap, a sleek, intuitive, and powerful mobile first front-end framework for faster and easier web development.</span>
                         </li> 
                         <li class="w3-padding-16">
-                            <span class="w3-large">CSS</span><br>
-                            <span>CSS stands for Cascading Style Sheets. CSS describes how HTML elements are to be displayed on screen, paper, or in other media.</span>
-                        </li>   
+                            <span class="w3-large">HTML</span><br>
+                            <span>HTML (HyperText Markup Language) is the most basic building block of the Web. It describes and defines the content of a webpage.</span>
+                        </li>  
+                        <li class="w3-padding-16">
+                             <span class="w3-large">CSS</span><br>
+                             <span>CSS stands for Cascading Style Sheets. CSS describes how HTML elements are to be displayed on screen, paper, or in other media.</span>
+                         </li>  
+
                         <li class="w3-padding-16 w3-hide-medium w3-hide-small">
                             <span class="w3-large">Scrum</span><br>
-                            <span>Scrum is a framework for developing and sustaining complex products. This Guide contains the definition of Scrum. This definition consists of Scrum’s roles, events, artifacts, and the rules that bind them together. Ken Schwaber and Jeff Sutherland developed Scrum; the Scrum Guide is written and provided by them. Together, they stand behind the Scrum Guide.</span>
+                            <span>Scrum is an iterative and incremental agile software development framework for managing product development.</span>
                         </li>  
                     </ul>
                 </div>
