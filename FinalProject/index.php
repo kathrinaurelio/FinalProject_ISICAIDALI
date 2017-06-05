@@ -23,11 +23,7 @@
         <!-- Grid -->
         <div class="w3-row">  
 
-
-
-
-
-            <!-- Blog entries -->
+        <!-- Blog entries -->
             <div class="w3-col l8 s12">
                 
                  <?php
@@ -39,8 +35,18 @@
                             echo '<div class="w3-card-4 w3-margin w3-white">';
                             echo '<div class="w3-container">';
 
+                            // prepare a statement which will run a little later
+                            // use prepare because when the query is run, we need to give it some data
+                            // in this case, when we run it, we need to replace ":postID" with the postID of the row
+                            // we're currently on
                             $imgstmt = $db->prepare('SELECT img FROM blog_imgs WHERE postID = :postID');
+                            
+//                          // execute the query we prepared earlier, giving it an associative array.
+                            // the associative array uses the same keys that were in the query (:postID, but could be anything :laura, :id etc)
                             $imgstmt->execute(array(':postID' => $row['postID']));
+                            
+                            // now, the query has been prepared, and the executed with the correct values (:postID)
+                            // run the fetch() function on the query to fetch the results of the query into the variable $img
                             $img = $imgstmt->fetch();
                             
                             echo '<img src="admin/images/'. $img['img'] . '" style="width:100%"/>';
@@ -105,32 +111,14 @@
                             <span>Scrum is an iterative and incremental agile software development framework for managing product development.</span>
                         </li>  
                     </ul>
+                    
                 </div>
-                <hr> 
-
-                <!--   Labels / tags 
-                  <div class="w3-card-2 w3-margin">
-                    <div class="w3-container w3-padding">
-                      <h4>Tags</h4>
-                    </div>
-                    <div class="w3-container w3-white">
-                    <p><span class="w3-tag w3-black w3-margin-bottom">Travel</span> <span class="w3-tag w3-light-grey w3-small w3-margin-bottom">New York</span> <span class="w3-tag w3-light-grey w3-small w3-margin-bottom">London</span>
-                      <span class="w3-tag w3-light-grey w3-small w3-margin-bottom">IKEA</span> <span class="w3-tag w3-light-grey w3-small w3-margin-bottom">NORWAY</span> <span class="w3-tag w3-light-grey w3-small w3-margin-bottom">DIY</span>
-                      <span class="w3-tag w3-light-grey w3-small w3-margin-bottom">Ideas</span> <span class="w3-tag w3-light-grey w3-small w3-margin-bottom">Baby</span> <span class="w3-tag w3-light-grey w3-small w3-margin-bottom">Family</span>
-                      <span class="w3-tag w3-light-grey w3-small w3-margin-bottom">News</span> <span class="w3-tag w3-light-grey w3-small w3-margin-bottom">Clothing</span> <span class="w3-tag w3-light-grey w3-small w3-margin-bottom">Shopping</span>
-                      <span class="w3-tag w3-light-grey w3-small w3-margin-bottom">Sports</span> <span class="w3-tag w3-light-grey w3-small w3-margin-bottom">Games</span>
-                    </p>
-                    </div>
-                  </div>-->
-
-                <!-- END Introduction Menu -->
+              <!-- END INTRO MENU -->    
             </div>
+              <!-- END Grid --> 
+        </div>
 
-            <!-- END GRID -->
-        </div><br>
 
-        <!-- END w3-content -->
-    </div>
     
 
     <!-- Footer -->

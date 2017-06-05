@@ -11,85 +11,86 @@
 
 require('includes/config.php');
 
-//A prepared statement is a feature used to execute the same (or similar) SQL statements repeatedly with high efficiency
-//Prepared statements basically work like this:
-//Prepare: An SQL statement template is created and sent to the database. Certain values are left unspecified, called parameters (labeled "?"). Example: INSERT INTO MyGuests VALUES(?, ?, ?)
-//The database parses, compiles, and performs query optimization on the SQL statement template, and stores the result without executing it
-//
-//Execute: At a later time, the application binds the values to the parameters, and the database executes the statement. The application may execute the statement as many times as it wants with different values
-//
+//A prepared statement is a feature used to execute the same (or similar) SQL statements repeatedly 
+//with high efficiency
+
+
+//Prepare: An SQL statement template is created and sent to the database. Certain values are left
+// unspecified, called parameters (labeled "?"). Example: INSERT INTO MyGuests VALUES(?, ?, ?)
+//The database parses, compiles, and performs query optimization on the SQL statement template, 
+//and stores the result without executing it
+
 //Compared to executing SQL statements directly, prepared statements have three main advantages:
-//Prepared statements reduces parsing time as the preparation on the query is done only once (although the statement is executed multiple times)
-//Bound parameters minimize bandwidth to the server as you need send only the parameters each time, and not the whole query
-//Prepared statements are very useful against SQL injections, because parameter values, which are transmitted later using a different protocol, need not be correctly escaped. If the original statement template is not derived from external input, SQL injection cannot occur.
+//Prepared statements reduces parsing time as the preparation on the query is done only once 
+//(although the statement is executed multiple times)
+
+//Bound parameters minimize bandwidth to the server as you need send only the parameters 
+//each time, and not the whole query
+//Prepared statements are very useful against SQL injections, because parameter values, 
+//which are transmitted later using a different protocol, need not be correctly escaped.
+//If the original statement template is not derived from external input, SQL injection cannot occur.
 
 
 
-$stmt = $db->prepare('SELECT postID, postTitle, postCont, postDate FROM blog_posts WHERE postID = :postID');
-$stmt2 = $db->prepare('SELECT commentID, commentAuthor, commentCont, commentDate, postID FROM blog_comments WHERE postID = :postID');
-$stmt3 = $db->prepare('SELECT img FROM blog_imgs WHERE postID = :postID');
+    $stmt = $db->prepare('SELECT postID, postTitle, postCont, postDate FROM blog_posts WHERE postID = :postID');
+    $stmt2 = $db->prepare('SELECT commentID, commentAuthor, commentCont, commentDate, postID FROM blog_comments WHERE postID = :postID');
+    $stmt3 = $db->prepare('SELECT img FROM blog_imgs WHERE postID = :postID');
 
-$stmt->execute(array(':postID' => $_GET['id']));
-$stmt2->execute(array(':postID' => $_GET['id']));
-$stmt3->execute(array(':postID' => $_GET['id']));
+//Execute: At a later time, the application binds the values to the parameters, and the database 
+//executes the statement. The application may execute the statement as many times as it wants with 
+//different values
+//
 
-$row = $stmt->fetch();
-$images = $stmt3->fetch();
-$comments = $stmt2->fetchAll();
+    $stmt->execute(array(':postID' => $_GET['id']));
+    $stmt2->execute(array(':postID' => $_GET['id']));
+    $stmt3->execute(array(':postID' => $_GET['id']));
+
+//saves db array into variable so we can access later
+
+    $row = $stmt->fetch();
+    $images = $stmt3->fetch();
+    $comments = $stmt2->fetchAll();
 
 //if post does not exists redirect user.
-if ($row['postID'] == '') {
-    header('Location: ./');
-    exit;
-}
+    if ($row['postID'] == '') {
+        header('Location: ./');
+        exit;
+    }
 
-?>
+    ?>
 <!DOCTYPE html>
-<html>
-    <title>Team blog</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
-    
-    <!--<style> <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></style>-->   
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    
-      <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    
+    <html>
+        <title>Team blog</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+                <!-- Links to external stylesheets -->   
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
-    <style>
-        body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
-    </style>
-    <body class="w3-light-grey">
+<!--Internal style sheet-->
+        <style>
+            body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
+        </style>
 
+<!--    applies class defined in stylesheets to everything in body-->
+        <body class="w3-light-grey">
 
         <!-- Header -->
         <header class="w3-container w3-center w3-padding-32"> 
-            <h1><b>OUR BLOG</b></h1>
-            
+            <h1><b>OUR BLOG</b></h1>   
         </header>
-        <!-- return to index button link -->
-        
-<!--               <div class="w3-row">  -->
-<!--       <div class="w3-card-4 w3-margin w3-white">-->
-       <div class="w3-container">   
-           
+<!-- return to index button link -->
+
+        <div class="w3-container">   
             <p><a href="./"><button class="w3-button w3-padding-large w3-white w3-border"><b>RETURN TO ALL BLOG POSTS</b></button></a></p>    
-       </div>
-       </div>
-       </div>
-           
- 
-        <!-- Grid -->
+        </div>
+
+<!-- Grid stlye -->
         <div class="w3-row">  
         <div class="w3-card-4 w3-margin w3-white">
-       <div class="w3-container">     
+        <div class="w3-container">     
+
 
             <?php
             echo '<div>';
