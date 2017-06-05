@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: May 30, 2017 at 07:54 PM
+-- Generation Time: May 31, 2017 at 11:24 PM
 -- Server version: 10.1.21-MariaDB
 -- PHP Version: 7.1.1
 
@@ -38,8 +38,11 @@ CREATE TABLE `blog_imgs` (
 --
 
 INSERT INTO `blog_imgs` (`imgID`, `caption`, `img`, `postID`) VALUES
-(1, 'lets go to the cinema', 'Cinema.jpg', 1),
-(6, 'image caption 2', '16.jpg', 16);
+(9, 'Two birds one stone ', '21.gif', 21),
+(10, 'screenshot', '19.png', 19),
+(12, 'future', '18.jpg', 18),
+(14, 'croyde', '20.jpg', 20),
+(15, 'cuba', '17.JPG', 17);
 
 --
 -- Indexes for dumped tables
@@ -60,7 +63,7 @@ ALTER TABLE `blog_imgs`
 -- AUTO_INCREMENT for table `blog_imgs`
 --
 ALTER TABLE `blog_imgs`
-  MODIFY `imgID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `imgID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 --
 -- Constraints for dumped tables
 --

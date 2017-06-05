@@ -2,10 +2,10 @@
 -- version 4.6.5.2
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Erstellungszeit: 29. Mai 2017 um 23:45
--- Server-Version: 10.1.21-MariaDB
--- PHP-Version: 7.1.1
+-- Host: localhost
+-- Generation Time: May 31, 2017 at 11:25 PM
+-- Server version: 10.1.21-MariaDB
+-- PHP Version: 7.1.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -17,13 +17,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Datenbank: `db`
+-- Database: `db`
 --
 
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `blog_comments`
+-- Table structure for table `blog_comments`
 --
 
 CREATE TABLE `blog_comments` (
@@ -35,40 +35,31 @@ CREATE TABLE `blog_comments` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Daten für Tabelle `blog_comments`
---
-
-INSERT INTO `blog_comments` (`commentID`, `commentAuthor`, `commentCont`, `commentDate`, `postID`) VALUES
-(1, 'New Forest Pony', 'This is just a test. It would be pretty cool to add comments', NULL, 1),
-(4, 'Another Pony', 'Can\'t believe this is actually working!', '2017-05-29 22:15:27', 1),
-(5, 'A cow', 'Really?', '2017-05-29 22:39:12', 1);
-
---
--- Indizes der exportierten Tabellen
+-- Indexes for dumped tables
 --
 
 --
--- Indizes für die Tabelle `blog_comments`
+-- Indexes for table `blog_comments`
 --
 ALTER TABLE `blog_comments`
   ADD PRIMARY KEY (`commentID`),
   ADD KEY `postID` (`postID`);
 
 --
--- AUTO_INCREMENT für exportierte Tabellen
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT für Tabelle `blog_comments`
+-- AUTO_INCREMENT for table `blog_comments`
 --
 ALTER TABLE `blog_comments`
-  MODIFY `commentID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `commentID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
--- Constraints der exportierten Tabellen
+-- Constraints for dumped tables
 --
 
 --
--- Constraints der Tabelle `blog_comments`
+-- Constraints for table `blog_comments`
 --
 ALTER TABLE `blog_comments`
   ADD CONSTRAINT `blog_comments_ibfk_1` FOREIGN KEY (`postID`) REFERENCES `blog_posts` (`postID`);

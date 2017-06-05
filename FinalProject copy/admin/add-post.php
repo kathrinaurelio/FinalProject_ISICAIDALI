@@ -33,7 +33,7 @@ if (!$user->is_logged_in()) {
 <div id="wrapper">
 
 	<?php include('menu.php');?>
-    <p><a href="./"><button class="w3-button w3-padding-large w3-white w3-border"><b>back to blog admin</b></button></a></p>
+	<p><a href="./">Blog Admin Index</a></p>
 
 	<h2>Add Post</h2>
 

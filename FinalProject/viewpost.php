@@ -10,72 +10,109 @@
 //
 
 require('includes/config.php');
-//include ('extras/socialbutton/socialbutton.html');
 
-$stmt = $db->prepare('SELECT postID, postTitle, postCont, postDate FROM blog_posts WHERE postID = :postID');
-$stmt2 = $db->prepare('SELECT commentID, commentAuthor, commentCont, commentDate, postID FROM blog_comments WHERE postID = :postID');
-$stmt3 = $db->prepare('SELECT img FROM blog_imgs WHERE postID = :postID');
+//A prepared statement is a feature used to execute the same (or similar) SQL statements repeatedly 
+//with high efficiency
 
-$stmt->execute(array(':postID' => $_GET['id']));
-$stmt2->execute(array(':postID' => $_GET['id']));
-$stmt3->execute(array(':postID' => $_GET['id']));
 
-$row = $stmt->fetch();
-$images = $stmt3->fetch();
-$comments = $stmt2->fetchAll();
+//Prepare: An SQL statement template is created and sent to the database. Certain values are left
+// unspecified, called parameters (labeled "?"). Example: INSERT INTO MyGuests VALUES(?, ?, ?)
+//The database parses, compiles, and performs query optimization on the SQL statement template, 
+//and stores the result without executing it
+
+//Compared to executing SQL statements directly, prepared statements have three main advantages:
+//Prepared statements reduces parsing time as the preparation on the query is done only once 
+//(although the statement is executed multiple times)
+
+//Bound parameters minimize bandwidth to the server as you need send only the parameters 
+//each time, and not the whole query
+//Prepared statements are very useful against SQL injections, because parameter values, 
+//which are transmitted later using a different protocol, need not be correctly escaped.
+//If the original statement template is not derived from external input, SQL injection cannot occur.
+
+
+
+    $stmt = $db->prepare('SELECT postID, postTitle, postCont, postDate FROM blog_posts WHERE postID = :postID');
+    $stmt2 = $db->prepare('SELECT commentID, commentAuthor, commentCont, commentDate, postID FROM blog_comments WHERE postID = :postID');
+    $stmt3 = $db->prepare('SELECT img FROM blog_imgs WHERE postID = :postID');
+
+//Execute: At a later time, the application binds the values to the parameters, and the database 
+//executes the statement. The application may execute the statement as many times as it wants with 
+//different values
+//
+
+    $stmt->execute(array(':postID' => $_GET['id']));
+    $stmt2->execute(array(':postID' => $_GET['id']));
+    $stmt3->execute(array(':postID' => $_GET['id']));
+
+//saves db array into variable so we can access later
+
+    $row = $stmt->fetch();
+    $images = $stmt3->fetch();
+    $comments = $stmt2->fetchAll();
 
 //if post does not exists redirect user.
-if ($row['postID'] == '') {
-    header('Location: ./');
-    exit;
-}
+    if ($row['postID'] == '') {
+        header('Location: ./');
+        exit;
+    }
 
-?>
+    ?>
 <!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <title>Blog - <?php echo $row['postTitle']; ?></title>
-        <link rel="stylesheet" href="style/normalize.css">
-        <link rel="stylesheet" href="style/main.css">
-    </head>
-    <body>
+    <html>
+        <title>Team blog</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+                <!-- Links to external stylesheets -->   
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
-        <div id="wrapper">
+<!--Internal style sheet-->
+        <style>
+            body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
+        </style>
 
-            <h1>Blog</h1>
-            <hr />
-            <p><a href="./">Blog Index</a></p>
+<!--    applies class defined in stylesheets to everything in body-->
+        <body class="w3-light-grey">
+
+        <!-- Header -->
+        <header class="w3-container w3-center w3-padding-32"> 
+            <h1><b>OUR BLOG</b></h1>   
+        </header>
+<!-- return to index button link -->
+
+        <div class="w3-container">   
+            <p><a href="./"><button class="w3-button w3-padding-large w3-white w3-border"><b>RETURN TO ALL BLOG POSTS</b></button></a></p>    
+        </div>
+
+<!-- Grid stlye -->
+        <div class="w3-row">  
+        <div class="w3-card-4 w3-margin w3-white">
+        <div class="w3-container">     
 
 
             <?php
             echo '<div>';
             echo '<h1>' . $row['postTitle'] . '</h1>';
-            echo '<p>Posted on ' . date('jS M Y', strtotime($row['postDate'])) . '</p>';
-            echo '<p><img src="admin/images/'.$images['img'].'" style="max-width: 350px;" /></p>';
+            echo '<p><i><span class="w3-opacity">Posted on ' . date('jS M Y', strtotime($row['postDate'])) . '</i></p>';
+            
+            if ($images['img']) {
+                echo '<p><img src="admin/images/'.$images['img'].'" style="max-width: 560px;" /></p>';
+            }
+            
             echo '<p>' . $row['postCont'] . '</p>';
             echo '</div>';
             ?>
-
         </div>
-        <div id="wrapper">
-            <h3>Comments</h3>
-            <?php
-             foreach ($comments as $comment) {
-                echo '<div>';
-                echo '<p>' . $comment['commentAuthor'] . '</p>';
-                echo '<p>Posted on ' . date('jS M Y', strtotime($comment['commentDate'])) . '</p>';
-                echo '<p>' . $comment['commentCont'] . '</p>';
-                echo '<p></br></p>';
-                echo '</div>';
-            }
-            ?>
         </div>
         
-        <div id="wrapper">
+                    <!-- Grid -->
+        <div class="w3-row">  
+        <div class="w3-card-4 w3-margin w3-white">
+       <div class="w3-container">  
 
-
-	<h2>Add Comment</h2>
+	<h3>Add Comment</h3>
 
 	<?php
 
@@ -124,6 +161,8 @@ if ($row['postID'] == '') {
 		}
 
 	}
+        
+        
 
 	//check for any errors
 	if(isset($error)){
@@ -144,7 +183,74 @@ if ($row['postID'] == '') {
 		<p><input type='submit' name='submit' value='Submit'></p>
 
 	</form>
+        
+       </div>
+            </div>
+            </div>
+            
+                    <!-- Grid -->
+        <div class="w3-row">  
+        <div class="w3-card-4 w3-margin w3-white">
+       <div class="w3-container">  
+           
+        <?php
+        
+        if ($comments == TRUE){
+            echo '<h3>Comments</h3>';
 
-</div>
+             foreach ($comments as $comment) {
+                echo '<div>';
+                echo '<p>' . $comment['commentAuthor'];
+                echo '<i><span class="w3-opacity">, posted on ' . date('jS M Y', strtotime($comment['commentDate'])) . '</i></p>';
+                echo '<p>' . $comment['commentCont'] . '</p>';
+                echo '<p></br></p>';
+                echo '</div>';
+             }
+            }
+            ?>
+            </div>
+        </div>
+
+        <!-- previous and next buttons -->
+        <?php
+            $stmt = $db->prepare('SELECT postID FROM blog_posts ORDER BY postID DESC');
+            $stmt->execute();
+            $result = $stmt->fetchAll();
+            $prevPost = null;
+            $nextPost = null;
+            
+            // loop through all results using an index
+            for($i = 0; $i < count($result); ++$i){
+                
+                // if the IDs match, we've found the current post
+                if ($result[$i]['postID'] === $_GET['id']) {
+                    
+                    // set $prevPost to $i - 1 (if we're greater than 0)
+                    if ($i > 0) {
+                        $prevPost = $result[$i - 1];
+                    }
+                    
+                    // set $nextPost to $i + 1 (if we're not at the end)
+                    if (($i + 1) < count($result)) {
+                        $nextPost = $result[$i + 1];
+                    }
+                }
+             }
+            
+
+            echo  '<div class="container">' ;             
+            echo '<ul class="pager">';
+            
+            if ($prevPost && $prevPost['postID']) {
+                echo  '<li class="previous"><a href="viewpost.php?id='. $prevPost['postID'] . '">Previous</a></li>';
+            }
+            
+            if ($nextPost && $nextPost['postID']) {
+                echo  '<li class="next"><a href="viewpost.php?id='. $nextPost['postID'] . '">Next</a></li>';
+            }
+            
+            echo '</ul>';
+            echo '</div>';
+        ?>
     </body>
 </html>
