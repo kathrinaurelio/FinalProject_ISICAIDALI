@@ -34,5 +34,3 @@ function __autoload($class) {
 //pass the database connection
 $user = new User($db); 
 
-//link to bootstrap
-

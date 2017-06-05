@@ -1,6 +1,7 @@
 <?php //include config
 require_once('../includes/config.php');
 
+
 //if not logged in redirect to login page
 if(!$user->is_logged_in()){ header('Location: login.php'); }
 ?>
@@ -29,9 +30,9 @@ if(!$user->is_logged_in()){ header('Location: login.php'); }
 <div id="wrapper">
 
 	<?php include('menu.php');?>
-	<p><a href="./">Blog Admin Index</a></p>
 
-	<h2>Edit Post</h2>
+        <p><a href="./"><button class="w3-button w3-padding-large w3-white w3-border"><b>back to blog admin</b></button></a></p>
+	<h2>Edit post</h2>
 
 
 	<?php
@@ -150,10 +151,10 @@ if(!$user->is_logged_in()){ header('Location: login.php'); }
 		<input type='hidden' name='postID' value='<?php echo $row['postID'];?>'>
 
 		<p><label>Title</label><br />
-		<input type='text' name='postTitle' value='<?php echo $row['postTitle'];?>'></p>
-
-		<p><label>Description</label><br />
-		<textarea name='postDesc' cols='60' rows='10'><?php echo $row['postDesc'];?></textarea></p>
+		<input type='text' name='postTitle' value='<?php echo $row['postTitle'];?>'</p>
+                
+                <p><label>Description</label><br />
+		<input type='text' name='postDesc' value='<?php echo $row['postDesc'];?>'</p>
                 
                 <?php if ($rowImg && $rowImg['imgID']) { ?>
                 <p>Current image:</p>

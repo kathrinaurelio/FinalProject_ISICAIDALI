@@ -16,10 +16,10 @@ if(!$user->is_logged_in()){ header('Location: login.php'); }
 
 <div id="wrapper">
 
-	<?php include('menuuser.php');?>
-	
-        <p><a href="users.php"><button class="w3-button w3-padding-large w3-white w3-border"><b>back to user admin</b></button></a></p>
-	<h2>Add user</h2>
+	<?php include('menu.php');?>
+	<p><a href="users.php">User Admin Index</a></p>
+
+	<h2>Add User</h2>
 
 	<?php
 
@@ -92,13 +92,13 @@ if(!$user->is_logged_in()){ header('Location: login.php'); }
 		<p><label>Password</label><br />
 		<input type='password' name='password' value='<?php if(isset($error)){ echo $_POST['password'];}?>'></p>
 
-		<p><label>Confirm password</label><br />
+		<p><label>Confirm Password</label><br />
 		<input type='password' name='passwordConfirm' value='<?php if(isset($error)){ echo $_POST['passwordConfirm'];}?>'></p>
 
 		<p><label>Email</label><br />
 		<input type='text' name='email' value='<?php if(isset($error)){ echo $_POST['email'];}?>'></p>
 		
-		<p><input type='submit' name='submit' value='Add user'></p>
+		<p><input type='submit' name='submit' value='Add User'></p>
 
 	</form>
 

@@ -12,10 +12,9 @@
 
 <nav class="navbar navbar-inverse">
   <div class="container-fluid">
-
     <ul class="nav navbar-nav">
-      <li class="active"><a href="index.php">Post management</a></li>
-      <li><a href="users.php">User management</a></li>
+      <li><a href="index.php">Post management</a></li>
+      <li class="active"><a href="users.php">User management</a></li>
     </ul>
     <ul class="nav navbar-nav navbar-right">
       <li><a href='logout.php'><span class="glyphicon glyphicon-user"></span> Log out</a></li>
