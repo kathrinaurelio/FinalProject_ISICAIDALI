@@ -101,11 +101,13 @@ require('includes/config.php');
             echo '<p><i><span class="w3-opacity">Posted on ' . date('jS M Y', strtotime($row['postDate'])) . ' by '.$author['username'].'</i></p>';
             
             if ($images['img']) {
-                echo '<p><img src="admin/images/'.$images['img'].'" style="max-width: 560px;" /></p>';
+                echo '<p><img src="admin/images/'.$images['img'].'" style="width: 100%;" /></p>';
             }
             
             echo '<p>' . $row['postCont'] . '</p>';
             echo '</div>';
+            echo '<p></p>';
+            
             ?>
         </div>
         </div>
@@ -181,7 +183,7 @@ require('includes/config.php');
 		<input type='text' name='commentAuthor' value='<?php if(isset($error)){ echo $_POST['commentAuthor'];}?>'></p>
 
 		<p><label>Comment</label><br />
-		<textarea name='commentCont' cols='60' rows='10'><?php if(isset($error)){ echo $_POST['commentCont'];}?></textarea></p>
+		<textarea name='commentCont' style="width:100%;" rows='10'><?php if(isset($error)){ echo $_POST['commentCont'];}?></textarea></p>
 
 		<p><input type='submit' name='submit' value='Submit'></p>
 
