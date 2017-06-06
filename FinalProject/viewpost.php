@@ -35,6 +35,7 @@ require('includes/config.php');
     $stmt = $db->prepare('SELECT postID, postTitle, postCont, postDate FROM blog_posts WHERE postID = :postID');
     $stmt2 = $db->prepare('SELECT commentID, commentAuthor, commentCont, commentDate, postID FROM blog_comments WHERE postID = :postID');
     $stmt3 = $db->prepare('SELECT img FROM blog_imgs WHERE postID = :postID');
+    $stmt4 = $db->prepare ('SELECT username FROM blog_members NATURAL JOIN blog_posts WHERE postID = :postID');
 
 //Execute: At a later time, the application binds the values to the parameters, and the database 
 //executes the statement. The application may execute the statement as many times as it wants with 
@@ -44,12 +45,14 @@ require('includes/config.php');
     $stmt->execute(array(':postID' => $_GET['id']));
     $stmt2->execute(array(':postID' => $_GET['id']));
     $stmt3->execute(array(':postID' => $_GET['id']));
+    $stmt4->execute(array(':postID' => $_GET['id']));
 
 //saves db array into variable so we can access later
 
     $row = $stmt->fetch();
     $images = $stmt3->fetch();
     $comments = $stmt2->fetchAll();
+    $author = $stmt4->fetch();
 
 //if post does not exists redirect user.
     if ($row['postID'] == '') {
@@ -95,7 +98,7 @@ require('includes/config.php');
             <?php
             echo '<div>';
             echo '<h1>' . $row['postTitle'] . '</h1>';
-            echo '<p><i><span class="w3-opacity">Posted on ' . date('jS M Y', strtotime($row['postDate'])) . '</i></p>';
+            echo '<p><i><span class="w3-opacity">Posted on ' . date('jS M Y', strtotime($row['postDate'])) . ' by '.$author['username'].'</i></p>';
             
             if ($images['img']) {
                 echo '<p><img src="admin/images/'.$images['img'].'" style="max-width: 560px;" /></p>';
